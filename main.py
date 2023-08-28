@@ -23,6 +23,8 @@ def main():
         print("="*100)
         while user_data["stop"] == False:
             menu()
+            typeTransport()
+            end()
     except ValueError:
         exit()
 
@@ -94,8 +96,8 @@ def sportive():
     
 def typeTransport():
     print("De qual forma você pretende chegar ao destino?")
-    for i in transport:
-        print(f"({i}) {transport[i]}")
+    for i in range(len(transport)):
+        print(f"({i}) {transport[int(i)]}")
     choice = int(input())
     if choice < 1 and choice > 4:
         print("<ERROR> Escolha uma opção válida, escolha uma opção entre 1 e 4!")
@@ -103,11 +105,12 @@ def typeTransport():
     user_data.update({"transport": transport[choice]})
 
 def end(): 
-    print(f"De acordo com as suas informações\n-O tipo de turismo escolhido é: {user_data['choice']}\n-O seu transporte será: {user_data['transport']}\n-O trajeto que recomendamos é: {user_data['locations'][0]} -> {user_data['locations'][0]}")
+    print(f"De acordo com as suas informações\n-O tipo de turismo escolhido é: {user_data['choice']}\n-O seu transporte será: {user_data['transport']}\n-O trajeto que recomendamos é: {user_data['locations'][0]} -> {user_data['locations'][1]}")
     print("="*100)
     print("Desenja encerrar o programa ? (S/N)")
     stop = input()
     if stop.lower() == "s":
+        print(f"Obrigado por usar o Path Finder {user_data['name']}!")
         user_data["stop"] = True
 
 def exit(): 
