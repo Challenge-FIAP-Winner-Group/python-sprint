@@ -16,26 +16,36 @@ def main():
         print("Bem vindo ao PathFinder!\nDigite o seu nome: ")
         name = input()
         if len(name) == 0: 
-            print("<ERROR> Digite um nome!")
             raise ValueError
         user_data.update({"name": name})
         print(f"Olá, {user_data['name']}!")
         print("="*100)
         while user_data["stop"] == False:
-            menu()
-            typeTransport()
-            end()
+            try:
+                menu()
+                typeTransport()
+                end()
+            except ValueError: 
+                error(1)
+            except KeyError:
+                error(2)
     except ValueError:
+        error(1)
+    except KeyError:
+        error(2)
+    except KeyboardInterrupt:
+        pass
+    finally: 
         exit()
+        
 
 def menu(): 
-    print("\nEscolha uma opção?")
+    print("\nEscolha uma opção:")
     for i in choices:
         print(f"({i}) {choices[i]['name']} -> {choices[i]['types']}")
     choice = int(input())
-    if choice > 6 and choice < 1:
-        print("<ERROR> Escolha uma opção válida, escolha uma opção entre 1 e 6!")
-        raise ValueError
+    if choice > 6 or choice < 1:
+        raise KeyError
     user_data.update({"choice": choices[choice]['name']})
     match choice:
         case 1: user_data.update({ "locations": cultural() })
@@ -99,10 +109,10 @@ def typeTransport():
     for i in range(len(transport)):
         print(f"({i}) {transport[int(i)]}")
     choice = int(input())
-    if choice < 1 and choice > 4:
-        print("<ERROR> Escolha uma opção válida, escolha uma opção entre 1 e 4!")
-        raise ValueError
+    if choice < 1 or choice > 3:
+        raise KeyError
     user_data.update({"transport": transport[choice]})
+
 
 def end(): 
     print(f"De acordo com as suas informações\n-O tipo de turismo escolhido é: {user_data['choice']}\n-O seu transporte será: {user_data['transport']}\n-O trajeto que recomendamos é: {user_data['locations'][0]} -> {user_data['locations'][1]}")
@@ -115,5 +125,15 @@ def end():
 
 def exit(): 
     print("\nPrograma encerrado.")
+
+def error(value):
+    print("="*100)
+    match value:
+        case 1:
+            print("<ERROR> Digite um valor válido!")
+        case 2:
+            print("<ERROR> Essa opção não existe!")
+    print("="*100)
+        
 
 main()
