@@ -38,7 +38,7 @@ def main():
     except KeyboardInterrupt:
         pass
     finally: 
-        exit()    
+        print("\nPrograma encerrado.") 
 
 def menu(): 
     print("\nEscolha uma opção:")
@@ -88,9 +88,6 @@ def end():
     if stop.lower() == "n":
         print(f"Obrigado por usar o Path Finder {user_data['name']}!")
         user_data["stop"] = True
-
-def exit(): 
-    print("\nPrograma encerrado.")
 
 def error(value):
     print("="*100)
