@@ -1,4 +1,5 @@
 import random
+import re
 
 user_data = dict(stop = False)
 choices = {
@@ -13,9 +14,10 @@ transport = ["Uber", "Metrô", "Ônibus", "A pé"]
 
 def main():
     try:
+        print("\n"+("=" * 45) + "PathFinder" + ("=" * 45))
         print("Bem vindo ao PathFinder!\nDigite o seu nome: ")
         name = input()
-        if len(name) == 0: 
+        if len(name) == 0 or re.search("\d", name): 
             raise ValueError
         user_data.update({"name": name})
         print(f"Olá, {user_data['name']}!")
@@ -36,8 +38,7 @@ def main():
     except KeyboardInterrupt:
         pass
     finally: 
-        exit()
-        
+        exit()    
 
 def menu(): 
     print("\nEscolha uma opção:")
@@ -47,18 +48,13 @@ def menu():
     if choice > 6 or choice < 1:
         raise KeyError
     user_data.update({"choice": choices[choice]['name']})
-    match choice:
-        case 1: user_data.update({ "locations": cultural() })
-        case 2: user_data.update({ "locations": historic() })
-        case 3: user_data.update({ "locations": environmental() })
-        case 4: user_data.update({ "locations": commercial() }) 
-        case 5: user_data.update({ "locations": gastronomic() }) 
-        case 6: user_data.update({ "locations": sportive() }) 
+    length = len(choices[choice]["location"]) - 1
+    user_data.update({ "locations": choose(choice, length) })
 
-def sort():
+def sort(length):
     sorted = []
-    sort1 = random.randint(0, 2)
-    sort2 = random.randint(0, 2)
+    sort1 = random.randint(0, length)
+    sort2 = random.randint(0, length)
     sorted.append(sort1)
     if sorted[0] == sort2:
         while sorted[0] == sort2:
@@ -68,58 +64,28 @@ def sort():
         sorted.append(sort2)
     return sorted
 
-def cultural():
-    sorted = sort()
-    loc1 = choices[1]["location"][sorted[0]]
-    loc2 = choices[1]["location"][sorted[1]]
-    return [loc1, loc2]
-
-def historic():
-    sorted = sort()
-    loc1 = choices[2]["location"][sorted[0]]
-    loc2 = choices[2]["location"][sorted[1]]
-    return [loc1, loc2]
-
-def environmental():
-    sorted = sort()
-    loc1 = choices[3]["location"][sorted[0]]
-    loc2 = choices[3]["location"][sorted[1]]
-    return [loc1, loc2]
-
-def commercial():
-    sorted = sort()
-    loc1 = choices[4]["location"][sorted[0]]
-    loc2 = choices[4]["location"][sorted[1]]
-    return [loc1, loc2]
-
-def gastronomic():
-    sorted = sort()
-    loc1 = choices[5]["location"][sorted[0]]
-    loc2 = choices[5]["location"][sorted[1]]
-    return [loc1, loc2]
-
-def sportive():
-    sorted = sort()
-    loc1 = choices[6]["location"][sorted[0]]
-    loc2 = choices[6]["location"][sorted[1]]
+def choose(choice, length):
+    sorted = sort(length)
+    loc1 = choices[choice]["location"][sorted[0]]
+    loc2 = choices[choice]["location"][sorted[1]]
     return [loc1, loc2]
     
 def typeTransport():
-    print("De qual forma você pretende chegar ao destino?")
+    print("\nDe qual forma você pretende chegar ao destino?")
     for i in range(len(transport)):
-        print(f"({i}) {transport[int(i)]}")
+        print(f"({i+1}) {transport[int(i)]}")
     choice = int(input())
-    if choice < 1 or choice > 3:
+    if choice < 1 or choice > 4:
         raise KeyError
-    user_data.update({"transport": transport[choice]})
-
+    user_data.update({"transport": transport[choice-1]})
 
 def end(): 
+    print("\n"+("=" * 45) + "Resultado" + ("=" * 46))
     print(f"De acordo com as suas informações\n-O tipo de turismo escolhido é: {user_data['choice']}\n-O seu transporte será: {user_data['transport']}\n-O trajeto que recomendamos é: {user_data['locations'][0]} -> {user_data['locations'][1]}")
     print("="*100)
-    print("Desenja encerrar o programa ? (S/N)")
+    print("Desenja escolher mais uma opção de trajeto ? (S/N)")
     stop = input()
-    if stop.lower() == "s":
+    if stop.lower() == "n":
         print(f"Obrigado por usar o Path Finder {user_data['name']}!")
         user_data["stop"] = True
 
@@ -135,5 +101,4 @@ def error(value):
             print("<ERROR> Essa opção não existe!")
     print("="*100)
         
-
 main()
