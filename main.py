@@ -10,7 +10,7 @@ choices = {
     5: {"name": "Gastronômico", "types": "Restaurantes, mercados e feiras para experimentar a culinária local.", "location": ["Fábrica da Bauducco", "Restaurante Figueira Rubaiyat", "Feira da Liberdade"]},
     6: {"name": "Esportivo", "types": "Arenas esportivas, estádios e outros locais para assistir ou praticar esportes na cidade.", "location": ["Estádio do Morumbi", "Museu do Futebol", "Allianz Parque"]},
 }
-transport = ["Uber", "Metrô", "Ônibus", "A pé"]
+transport = ["Uber", "Metrô", "Ônibus", "A pé", "Bicicleta"]
 
 def main():
     try:
@@ -75,7 +75,7 @@ def typeTransport():
     for i in range(len(transport)):
         print(f"({i+1}) {transport[int(i)]}")
     choice = int(input())
-    if choice < 1 or choice > 4:
+    if choice < 1 or choice > 5:
         raise KeyError
     user_data.update({"transport": transport[choice-1]})
 
@@ -83,7 +83,7 @@ def end():
     print("\n"+("=" * 45) + "Resultado" + ("=" * 46))
     print(f"De acordo com as suas informações\n-O tipo de turismo escolhido é: {user_data['choice']}\n-O seu transporte será: {user_data['transport']}\n-O trajeto que recomendamos é: {user_data['locations'][0]} -> {user_data['locations'][1]}")
     print("="*100)
-    print("Desenja escolher mais uma opção de trajeto ? (S/N)")
+    print("Deseja escolher mais uma opção de trajeto ? (S/N)")
     stop = input()
     if stop.lower() == "n":
         print(f"Obrigado por usar o Path Finder {user_data['name']}!")
