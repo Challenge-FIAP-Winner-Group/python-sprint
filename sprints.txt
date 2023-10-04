@@ -1,0 +1,10 @@
+Utilizar no programa conceitos de entrada, processamento, saída de dados (usar
+fstrings).
+• Realizar validações de todas as informações obtidas, conforme requisitos funcionais.
+• Armazenamento de dados em variáveis, listas, dicionários e arquivos externos (formato
+Json).
+• Realizar tratamento de exceções.
+• Construir funções (com passagem de parâmetros e retorno) para as principais
+funcionalidades da solução.
+• O programa deve ser capaz de criar arquivos externos novos e atualizar informações
+de arquivos externos existentes.
