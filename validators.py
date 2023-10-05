@@ -1,53 +1,47 @@
+import re
+
+
 def cpf(cpf):
-    if len(cpf) == 11:
-        first1 = int(cpf[0]) * 10
-        first2 = int(cpf[1]) * 9
-        first3 = int(cpf[2]) * 8
-        first4 = int(cpf[3]) * 7
-        first5 = int(cpf[4]) * 6
-        first6 = int(cpf[5]) * 5
-        first7 = int(cpf[6]) * 4
-        first8 = int(cpf[7]) * 3
-        first9 = int(cpf[8]) * 2
+    if re.search("\d{3}.\d{3}.\d{3}-\d{2}", cpf):
+        # Remove caracteres não numéricos do CPF
+        cpf = re.sub("\.", "", cpf)
+        cpf = re.sub("-", "", cpf)
 
-        seg_first1 = int(cpf[0]) * 11
-        seg_first2 = int(cpf[1]) * 10
-        seg_first3 = int(cpf[2]) * 9
-        seg_first4 = int(cpf[3]) * 8
-        seg_first5 = int(cpf[4]) * 7
-        seg_first6 = int(cpf[5]) * 6
-        seg_first7 = int(cpf[6]) * 5
-        seg_first8 = int(cpf[7]) * 4
-        seg_first9 = int(cpf[8]) * 3
-        seg_first10 = int(cpf[9]) * 2
+        # Verifica se o CPF possui 11 dígitos
+        if len(cpf) != 11:
+            return False
 
-        total = (first1 + first2 + first3 + first4 +
-                 first5 + first6 + first7 + first8 + first9)
-        division = (total // 11)
-        left = (total - (11 * division))
-
-        total_2 = (seg_first1 + seg_first2 + seg_first3 + seg_first4 + seg_first5 +
-                   seg_first6 + seg_first7 + seg_first8 + seg_first9 + seg_first10)
-        division_2 = (total_2 // 11)
-        left_2 = (total_2 - (11 * division_2))
-
-        val_1 = False
-        val_2 = False
-        val_3 = False
-        val_4 = False
-
-        if (left <= 1) and (cpf[9] == 0):
-            val_1 = True
-        if (left >= 2 and left < 10) and (11 - left == cpf[9]):
-            val_2 = True
-        if (left_2 <= 1) and (cpf[10] == 0):
-            val_3 = True
-        if (left_2 >= 2 and left_2 < 10) and (11 - left_2 == cpf[10]):
-            val_4 = True
+        # Calcula o primeiro dígito verificador
+        total = 0
+        for i in range(9):
+            total += int(cpf[i]) * (10 - i)
+        left = total % 11
+        if left < 2:
+            verify1 = 0
         else:
-            ()
+            verify1 = 11 - left
 
-        if (val_1 == True or val_2 == True) and (val_3 == True or val_4 == True):
-            pass
+        # Calcula o segundo dígito verificador
+        total = 0
+        for i in range(10):
+            total += int(cpf[i]) * (11 - i)
+        left = total % 11
+        if left < 2:
+            verify2 = 0
         else:
-            raise ValueError
+            verify2 = 11 - left
+
+        # Verifica se os dígitos verificadores estão corretos
+        if int(cpf[9]) == verify1 and int(cpf[10]) == verify2:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+
+def cep(value):
+    if re.search("\d{5}-\d{3}", value):
+        return True
+    else:
+        return False

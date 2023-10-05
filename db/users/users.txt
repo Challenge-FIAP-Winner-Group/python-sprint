@@ -1,1 +1,1 @@
-{"users": [{"username": "guiespim18", "password": "123", "name": "Guilherme Monteiro Espim", "zipCode": "02075-040", "age": 21, "document": "513.477.718-75"}, {"username": "helosn08", "password": "123", "name": "Heloisa Santos Nascimento", "zipCode": "02179-050", "age": 20, "document": "447.595.118-65"}]}
+{"users": [{"username": "helosn08", "password": "helo123", "name": "Heloisa", "zipCode": "02179-040", "age": 20, "document": "447.595.118-65"}]}

@@ -1,6 +1,7 @@
 import alerts
 import json
 import quests
+import validators
 
 usersFilePath = "db/users/users.txt"
 user = dict()
@@ -64,29 +65,35 @@ def register():
     password = input("Digite a sua senha: ")
     passwordRepeat = input("Repita a sua senha: ")
     fields = [name, username, zipCode, document, password]
-    validate(fields)
-    if password != passwordRepeat:
-        alerts.error("A confirmação da senha precisa ser igual a senha!")
-        register()
-    else:
-        data = dict(username = username, password = password, name = name, zipCode = zipCode, age = age, document = document)
-        with open(usersFilePath, "r") as file:
-            obj = json.loads(file.read())
-            for item in obj['users']:
-                if item["username"] == data["username"]:
-                    alerts.error("Este usuário já exite!")
-                    register()
-                    break
-            obj["users"].append(data)
+    if validate(fields):
+        raise ValueError
+    if validators.cep(zipCode) and validators.cpf(document):  
+        if password != passwordRepeat:
+            alerts.error("A confirmação da senha precisa ser igual a senha!")
+            register()
+        else:
+            data = dict(username = username, password = password, name = name, zipCode = zipCode, age = age, document = document)
+            obj = dict()
+            with open(usersFilePath, "r") as file:
+                obj = json.loads(file.read())
+                for item in obj['users']:
+                    if item["username"] == data["username"]:
+                        alerts.error("Este usuário já exite!")
+                        register()
+                        break
             with open(usersFilePath, "w") as save:
+                obj["users"].append(data)
                 save.write(json.dumps(obj))
                 alerts.success("Cadastro feito com sucesso!")
-                cont = input("Deseja realizar login e prosseguir com o programa? (S/N) ").upper()
-                quests.validate(cont)
-                if cont == "S":
-                    login()
-                else:
-                    alerts.bye(data["username"])
+            cont = input("Deseja realizar login e prosseguir com o programa? (S/N) ").upper()
+            quests.validate(cont)
+            if cont == "S":
+                login()
+            else:
+                alerts.bye(data["username"])
+    else:
+        alerts.error("Digite valores válidos!")
+        register()
 
         
 
@@ -95,4 +102,5 @@ def register():
 def validate(arr):
     for i in arr:
         if len(i) == 0:
-            raise ValueError
+            return True
+    return False
