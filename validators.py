@@ -1,6 +1,6 @@
 import re
 
-
+# função para validar se o cpf é válido
 def cpf(cpf):
     if re.search("\d{3}.\d{3}.\d{3}-\d{2}", cpf):
         # Remove caracteres não numéricos do CPF
@@ -39,7 +39,7 @@ def cpf(cpf):
     else:
         return False
 
-
+# função para validar se o cep é válido
 def cep(value):
     if re.search("\d{5}-\d{3}", value):
         return True

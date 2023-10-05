@@ -2,8 +2,9 @@ import alerts
 import json
 import quests
 import validators
+import routes
 
-usersFilePath = "db/users/users.txt"
+usersFilePath = "db/users/users.json"
 user = dict()
 
 # função para dar start no menu principal
@@ -48,7 +49,7 @@ def login():
                         found = True
                         if item["password"] == password:
                             user = item
-                            with open("db/users/logged.txt", "w", encoding="utf-8") as file:
+                            with open("db/users/logged.json", "w", encoding="utf-8") as file:
                                 file.write(json.dumps(item))
                             alerts.success(f"Bem-vindo(a) {user['username']}")
                             valid = True
@@ -60,6 +61,7 @@ def login():
                         found = False
                 if found == False:
                     alerts.error("Usuário não encontrado!")
+    routes.routesOpt()
 
 
 
